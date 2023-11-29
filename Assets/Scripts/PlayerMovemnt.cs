@@ -10,7 +10,7 @@ public class PlayerMovemnt : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0, 0);
+        Vector3 move = new Vector3(Input.GetAxis("Horizontal") * -1f, 0, 0);
         controller.Move(move * speed * Time.deltaTime);
     }
 }

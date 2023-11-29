@@ -31,9 +31,7 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        /* foreach (GameObject gmObj in platforms) {
-            gmObj.transform.Translate(new Vector3(0, 0, speed * Time.deltaTime));
-        } */
+
     }
 
     void SpawnNewPlatform()

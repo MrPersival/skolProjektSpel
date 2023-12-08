@@ -16,6 +16,8 @@ public class GameController : MonoBehaviour
     public Transform player;
     public float rotatationCoefficient = 1f;
 
+    public float chanseToSpawnPlatform = 25f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -38,9 +40,18 @@ public class GameController : MonoBehaviour
     {
         GameObject platform = new GameObject();
         GameObject lastPlatform = platforms.Last();
-        platform = Instantiate(emptyPlatform,
+        float rndChanse = Random.Range(0, 1000) / 10;
+        if(rndChanse < chanseToSpawnPlatform) {
+            platform = Instantiate(autgumentPlatform,
             lastPlatform.transform.position + new Vector3(0, 0, lastPlatform.GetComponent<Renderer>().bounds.size.z - 0.0001f) * -1,
             Quaternion.identity);
+        }
+        else {
+            platform = Instantiate(emptyPlatform,
+            lastPlatform.transform.position + new Vector3(0, 0, lastPlatform.GetComponent<Renderer>().bounds.size.z - 0.0001f) * -1,
+            Quaternion.identity);
+        }
+
         platform.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, speed);
         platforms.Add(platform);
     }

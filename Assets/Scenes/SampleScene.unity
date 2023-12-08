@@ -562,11 +562,12 @@ MonoBehaviour:
   objectsToSpawnOnStart: 20
   speed: 10
   emptyPlatform: {fileID: 2403650977670366314, guid: 2398801212243b74c8ed03f8f4a7ea0d, type: 3}
-  autgumentPlatform: {fileID: 0}
+  autgumentPlatform: {fileID: 2403650977670366314, guid: 5b641e4419e2fce41850b5518c1661c5, type: 3}
   startPlatform: {fileID: 640475271}
   deleteColider: {fileID: 10036965}
   player: {fileID: 743989217}
-  rotatationCoefficient: 3
+  rotatationCoefficient: 1
+  chanseToSpawnPlatform: 25
 --- !u!4 &1554745120
 Transform:
   m_ObjectHideFlags: 0

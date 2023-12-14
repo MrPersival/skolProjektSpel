@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System;
-using Random = UnityEngine.Random;
+using Random = System.Random;
 
 public class AugmentationPointsController : MonoBehaviour
 {
@@ -33,29 +33,30 @@ public class AugmentationPointsController : MonoBehaviour
         }
 
         //TODO: Do as cycle with arrays
-        float rndChanse = Random.Range(0, 1000) / 10;
+        Random rnd = new Random();
+        float rndChanse = rnd.Next(0, 1000) / 10;
         pointsGeneratorPool chosedPGP = new pointsGeneratorPool();
-        Debug.LogWarning(rndChanse);
+        //Debug.LogWarning(rndChanse);
         foreach(var pool in poolsWithChanses) {
-            Debug.LogWarning(rndChanse + " " + pool.Value);
+            //Debug.LogWarning(rndChanse + " " + pool.Value);
             if(pool.Value >= rndChanse) {
                 chosedPGP = pool.Key;
-                Debug.LogWarning($"{chosedPGP.maxPoints}, {chosedPGP.minPoints}, {pool.Value}, {rndChanse}");
+                //Debug.LogWarning($"{chosedPGP.maxPoints}, {chosedPGP.minPoints}, {pool.Value}, {rndChanse}");
                 break;
             }
         }
-        firstColTriggerPoints.points = Random.Range(chosedPGP.minPoints, chosedPGP.maxPoints);
+        firstColTriggerPoints.points = rnd.Next(chosedPGP.minPoints, chosedPGP.maxPoints);
         firstColTriggerPoints.isProcents = chosedPGP.isProcents;
         //Debug.LogWarning($"Chosed PGP for first: {chosedPGP.minPoints}, {chosedPGP.maxPoints}, {chosedPGP.isProcents}. Coef was {chosedPGP.spawnCoef}, chanse to spawn was {poolsWithChanses[chosedPGP]}, rndNumber {rndChanse}");
 
-        rndChanse = Random.Range(0, 1000) / 10;
+        rndChanse = rnd.Next(0, 1000) / 10;
         foreach(var pool in poolsWithChanses) {
             if(pool.Value <= rndChanse) {
                 chosedPGP = pool.Key;
                 break;
             }
         }
-        secondColTriggerPoints.points = Random.Range(chosedPGP.minPoints, chosedPGP.maxPoints);
+        secondColTriggerPoints.points = rnd.Next(chosedPGP.minPoints, chosedPGP.maxPoints);
         secondColTriggerPoints.isProcents = chosedPGP.isProcents;
 
         if(firstColTriggerPoints.isProcents) firstColliderPointsText.text = Convert.ToString(firstColTriggerPoints.points) + " %";

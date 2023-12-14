@@ -20,7 +20,6 @@ public class trapGenerator : MonoBehaviour
             trapsWithChanses.Add(preset, oneSpawnCoef * preset.coefToSpawn + lastChanse);
             lastChanse += oneSpawnCoef * preset.coefToSpawn;
         }
-
         float rndChanse = UnityEngine.Random.Range(0, 100);
 
         foreach(var dictObj in trapsWithChanses)

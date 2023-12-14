@@ -3,13 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using Unity.VisualScripting;
+using TMPro;
+using System;
+using Random = System.Random;
+using UnityEngine.UIElements;
 
 public class GameController : MonoBehaviour
 {
+    public float points = 1f;
     public int objectsToSpawnOnStart = 4;
     public float speed = 1.0f;
     public GameObject emptyPlatform;
     public GameObject autgumentPlatform;
+
+    public GameObject trapPlatform;
     public GameObject startPlatform;
     public BoxCollider deleteColider;
     private List<GameObject> platforms = new List<GameObject>();
@@ -18,8 +25,23 @@ public class GameController : MonoBehaviour
 
     public float chanseToSpawnPlatform = 25f;
 
+    public float chanseToSpawnTrap = 50f;
+
+    public float pointsSpeedCoef = 0.0001f;
+
+    public float pointsForSecond = 1f;
+
+    public TextMeshProUGUI pointsUi;
+
+    private float pointsTimer = 0f;
+
+    public Transform gameOverScreen;
+    public TextMeshProUGUI endPointsUi;
+
+    Random rnd = new Random();
+
     // Start is called before the first frame update
-    void Start()
+    void Start() 
     {
         platforms.Add(startPlatform);
         startPlatform.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, speed);
@@ -33,20 +55,35 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-
+        pointsTimer = Time.deltaTime + pointsTimer;
+        Debug.LogWarning(pointsTimer);
+        if (pointsTimer >= 1f)
+        {
+            points = points + (pointsForSecond * speed);
+            speed = speed + (points * pointsSpeedCoef);
+            pointsUi.text = Convert.ToString(Math.Round(points));
+            pointsTimer = 0f;
+        }
     }
 
     void SpawnNewPlatform()
     {
         GameObject platform = new GameObject();
         GameObject lastPlatform = platforms.Last();
-        float rndChanse = Random.Range(0, 1000) / 10;
+        float rndChanse = rnd.Next(0, 1000) / 10;
         if(rndChanse < chanseToSpawnPlatform) {
             platform = Instantiate(autgumentPlatform,
             lastPlatform.transform.position + new Vector3(0, 0, lastPlatform.GetComponent<Renderer>().bounds.size.z - 0.0001f) * -1,
             Quaternion.identity);
         }
-        else {
+        else if(rndChanse < chanseToSpawnTrap)
+        {
+            platform = Instantiate(trapPlatform,
+            lastPlatform.transform.position + new Vector3(0, 0, lastPlatform.GetComponent<Renderer>().bounds.size.z - 0.0001f) * -1,
+            Quaternion.identity);
+        }
+        else
+        {
             platform = Instantiate(emptyPlatform,
             lastPlatform.transform.position + new Vector3(0, 0, lastPlatform.GetComponent<Renderer>().bounds.size.z - 0.0001f) * -1,
             Quaternion.identity);
@@ -62,4 +99,12 @@ public class GameController : MonoBehaviour
         Destroy(platform);
         SpawnNewPlatform();
     }
+
+    public void endGame() {
+        Debug.LogWarning("GG WP");
+        Time.timeScale = 0f;
+        gameOverScreen.gameObject.SetActive(true);
+        endPointsUi.text = Convert.ToString(Math.Round(points));
+    }
+
 }

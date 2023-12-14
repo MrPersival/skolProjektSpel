@@ -7,6 +7,7 @@ using TMPro;
 using System;
 using Random = System.Random;
 using UnityEngine.UIElements;
+using UnityEditor;
 
 public class GameController : MonoBehaviour
 {
@@ -40,9 +41,11 @@ public class GameController : MonoBehaviour
 
     Random rnd = new Random();
 
+
     // Start is called before the first frame update
     void Start() 
     {
+        Time.timeScale = 1f;
         platforms.Add(startPlatform);
         startPlatform.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, speed);
         for(int i = 1; i <= objectsToSpawnOnStart; i++)
@@ -56,7 +59,7 @@ public class GameController : MonoBehaviour
     void FixedUpdate()
     {
         pointsTimer = Time.deltaTime + pointsTimer;
-        Debug.LogWarning(pointsTimer);
+        //Debug.LogWarning(pointsTimer);
         if (pointsTimer >= 1f)
         {
             points = points + (pointsForSecond * speed);
@@ -64,6 +67,8 @@ public class GameController : MonoBehaviour
             pointsUi.text = Convert.ToString(Math.Round(points));
             pointsTimer = 0f;
         }
+
+
     }
 
     void SpawnNewPlatform()
@@ -71,12 +76,12 @@ public class GameController : MonoBehaviour
         GameObject platform = new GameObject();
         GameObject lastPlatform = platforms.Last();
         float rndChanse = rnd.Next(0, 1000) / 10;
-        if(rndChanse < chanseToSpawnPlatform) {
+        if(rndChanse < chanseToSpawnPlatform && PrefabUtility.GetCorrespondingObjectFromSource(lastPlatform) != autgumentPlatform) {
             platform = Instantiate(autgumentPlatform,
             lastPlatform.transform.position + new Vector3(0, 0, lastPlatform.GetComponent<Renderer>().bounds.size.z - 0.0001f) * -1,
             Quaternion.identity);
         }
-        else if(rndChanse < chanseToSpawnTrap)
+        else if(rndChanse < chanseToSpawnTrap && PrefabUtility.GetCorrespondingObjectFromSource(lastPlatform) != trapPlatform && platforms.Count >= 5)
         {
             platform = Instantiate(trapPlatform,
             lastPlatform.transform.position + new Vector3(0, 0, lastPlatform.GetComponent<Renderer>().bounds.size.z - 0.0001f) * -1,

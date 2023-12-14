@@ -12,21 +12,24 @@ public class trapGenerator : MonoBehaviour
     {
         float summOfAllCoef = 0f;
         foreach (trapsPreset preset in trapsPresets) summOfAllCoef += preset.coefToSpawn;
-        float oneSpawnCoef = 100 / summOfAllCoef;
+        float oneSpawnCoef = 100f / summOfAllCoef;
         Dictionary<trapsPreset, float> trapsWithChanses = new Dictionary<trapsPreset, float>();
-        float lastChanse = 0;
+        float lastChanse = 0f;
         foreach (trapsPreset preset in trapsPresets)
         {
             trapsWithChanses.Add(preset, oneSpawnCoef * preset.coefToSpawn + lastChanse);
-            lastChanse += oneSpawnCoef * preset.coefToSpawn;
+            lastChanse = oneSpawnCoef * preset.coefToSpawn + lastChanse;
         }
-        float rndChanse = UnityEngine.Random.Range(0, 100);
+        System.Random rand = new System.Random();
+        float rndChanse = rand.Next(0, 100);
 
         foreach(var dictObj in trapsWithChanses)
         {
-            if(dictObj.Value <= rndChanse)
+            Debug.LogWarning(rndChanse);
+            if (dictObj.Value >= rndChanse)
             {
                 dictObj.Key.preset.SetActive(true);
+                Debug.LogWarning(dictObj.Value);
                 break;
             }
         }
@@ -38,5 +41,5 @@ public class trapGenerator : MonoBehaviour
 public struct trapsPreset {
     public GameObject preset;
     public float coefToSpawn;
-    
+
 }

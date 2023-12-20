@@ -62,7 +62,7 @@ public class GameController : MonoBehaviour
         //Debug.LogWarning(pointsTimer);
         if (pointsTimer >= 1f)
         {
-            points = points + (pointsForSecond * speed);
+            points = points + Math.Abs(pointsForSecond * speed);
             speed = speed + (points * pointsSpeedCoef);
             pointsUi.text = Convert.ToString(Math.Round(points));
             pointsTimer = 0f;
@@ -76,12 +76,12 @@ public class GameController : MonoBehaviour
         GameObject platform = new GameObject();
         GameObject lastPlatform = platforms.Last();
         float rndChanse = rnd.Next(0, 1000) / 10;
-        if(rndChanse < chanseToSpawnPlatform && PrefabUtility.GetCorrespondingObjectFromSource(lastPlatform) != autgumentPlatform) {
+        if(rndChanse < chanseToSpawnPlatform && lastPlatform.name != autgumentPlatform.name + "(Clone)") { //Find other way maybe
             platform = Instantiate(autgumentPlatform,
             lastPlatform.transform.position + new Vector3(0, 0, lastPlatform.GetComponent<Renderer>().bounds.size.z - 0.0001f) * -1,
             Quaternion.identity);
         }
-        else if(rndChanse < chanseToSpawnTrap && PrefabUtility.GetCorrespondingObjectFromSource(lastPlatform) != trapPlatform && platforms.Count >= 5)
+        else if(rndChanse < chanseToSpawnTrap && lastPlatform.name != trapPlatform.name + "(Clone)" && platforms.Count >= 5)
         {
             platform = Instantiate(trapPlatform,
             lastPlatform.transform.position + new Vector3(0, 0, lastPlatform.GetComponent<Renderer>().bounds.size.z - 0.0001f) * -1,

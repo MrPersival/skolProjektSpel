@@ -32,7 +32,7 @@ public class AugmentationPointsController : MonoBehaviour
             lastChanse += (oneSpawnCoef * pool.spawnCoef);
         }
 
-        //TODO: Do as cycle with arrays
+        //TODO: Possible to do as cycle when needed
         Random rnd = new Random();
         float rndChanse = rnd.Next(0, 1000) / 10;
         pointsGeneratorPool chosedPGP = new pointsGeneratorPool();

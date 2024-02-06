@@ -62,7 +62,7 @@ public class GameController : MonoBehaviour
         //Debug.LogWarning(pointsTimer);
         if (pointsTimer >= 1f)
         {
-            points = points + Math.Abs(pointsForSecond * speed);
+            points = points + pointsForSecond; // + Math.Abs(pointsForSecond * speed)
             speed = speed + (points * pointsSpeedCoef);
             pointsUi.text = Convert.ToString(Math.Round(points));
             pointsTimer = 0f;

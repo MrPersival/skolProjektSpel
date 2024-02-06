@@ -13,7 +13,7 @@ public class TrapCube : MonoBehaviour
     }
 
     private void OnTriggerEnter(Collider col) {
-        Debug.LogWarning("Collided with: " + col.gameObject.name + " with tag " + col.tag);
+        //Debug.LogWarning("Collided with: " + col.gameObject.name + " with tag " + col.tag);
         if(col.tag == "Player") {
             controller.endGame();
         }

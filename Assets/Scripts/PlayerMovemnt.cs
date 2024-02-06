@@ -19,19 +19,25 @@ public class PlayerMovemnt : MonoBehaviour
         controller.Move(move * speed * Time.deltaTime);
     }
 
-    private void OnTriggerEnter(Collider col)
+    private void OnTriggerExit(Collider col)
     {
-        Debug.LogWarning("Collided with: " + col.gameObject.name + " with tag " + col.tag);
         if(col.tag == "AddPointsTrigger") {
+            Debug.LogWarning("Collided with: " + col.gameObject.name + " with tag " + col.tag);
             string addPointsText = col.GetComponentInChildren<TextMeshProUGUI>().text;
-            Debug.LogWarning("Substring 1: " + addPointsText.Substring(addPointsText.Length - 1));
-            Debug.LogWarning("Substring 2: " + addPointsText.Substring(0, addPointsText.Length - 2));
-
+            Debug.LogWarning("Points before " + gc.points);
             if(addPointsText.Substring(addPointsText.Length - 1) == "%")
             {
-                gc.points += gc.points * (Convert.ToInt16(addPointsText.Substring(0, addPointsText.Length - 2)) / 100);
+                //Debug.LogWarning("Substring 1: " + addPointsText.Substring(addPointsText.Length - 1));
+                //Debug.LogWarning("Substring 2: " + addPointsText.Substring(0, addPointsText.Length - 2));
+                gc.points = gc.points + (gc.points * (Convert.ToInt16(addPointsText.Substring(0, addPointsText.Length - 2)) / 100));
+                //Debug.LogWarning("Points added " + gc.points * (Convert.ToInt16(addPointsText.Substring(0, addPointsText.Length - 2)) / 100));
             }
-            else gc.points += Convert.ToInt16(addPointsText);
+            else
+            {
+                gc.points = Convert.ToInt16(addPointsText) + gc.points;
+                //Debug.LogWarning("Points added " + Convert.ToInt16(addPointsText));
+            }
+            //Debug.LogWarning("Points after" + gc.points);
         }
     }
 }

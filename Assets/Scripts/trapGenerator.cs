@@ -25,11 +25,11 @@ public class trapGenerator : MonoBehaviour
 
         foreach(var dictObj in trapsWithChanses)
         {
-            Debug.LogWarning(rndChanse);
+            //Debug.LogWarning(rndChanse);
             if (dictObj.Value >= rndChanse)
             {
                 dictObj.Key.preset.SetActive(true);
-                Debug.LogWarning(dictObj.Value);
+                //Debug.LogWarning(dictObj.Value);
                 break;
             }
         }

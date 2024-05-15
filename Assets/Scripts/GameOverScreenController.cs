@@ -22,7 +22,7 @@ public class GameOverScreenController : MonoBehaviour
     }
     void Update()
     {
-        if(Input.GetButtonDown("Jump") == true)
+        if(Input.GetButtonDown("Jump") == true) //Jump because Space binded to Jump in inputsystem. TODO: change this to something more straightfoward.
         {
             SceneManager.LoadScene(0);
         }

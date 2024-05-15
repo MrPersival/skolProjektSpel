@@ -8,7 +8,7 @@ public class trapGenerator : MonoBehaviour
 {
 
     public trapsPreset[] trapsPresets;
-    void Start()
+    void Start() //Decides what trap preset to use. All presets have diffrent coeficient to spawn.
     {
         float summOfAllCoef = 0f;
         foreach (trapsPreset preset in trapsPresets) summOfAllCoef += preset.coefToSpawn;

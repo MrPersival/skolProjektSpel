@@ -4,40 +4,48 @@ using UnityEngine;
 
 public class PointsSpawner : MonoBehaviour
 {
-    public Transform basePlane;
     public Transform player;
-    public Transform maxPoint;
+    public float distanceToPlayerOnSpawn = 100f;
+    public Transform maxPoint; //Some obj will spawn between borders in random, so we need their X-coord
     public Transform minPoint;
 
     public GameObject pointObj;
-    public GameObject augmentationObj;
+    public GameObject augmentationObj; //Not yet implimented
+    public GameObject trapPlatform;
 
-    float timeTotalPoint = 0f;
-    float timeTotalAugmentation = 0f;
-    // Update is called once per frame
-    void Update()
+    public GameController gc;
+
+    void Start() //Start calling function that spawn obj every N seconds.
     {
-        timeTotalPoint += Time.deltaTime;
-        if (timeTotalPoint >= 1)
-        {
-            timeTotalPoint = 0f;
-            SpawnObj(pointObj);
-        }
+        InvokeRepeating("spawnPointObj", 0f, .5f);
+        InvokeRepeating("spawnTrapPlatform", 0f, 2f);
 
-        timeTotalAugmentation += Time.deltaTime;
-        if (timeTotalAugmentation >= 60)
-        {
-            timeTotalAugmentation = 0f;
-            SpawnObj(augmentationObj);
+    }
+    void SpawnObj(GameObject objToSpawn, bool randomPosition = false)
+    {
+        //Debug.LogWarning("Spawning " + objToSpawn.name);
+        float x = 0f;
+        if (randomPosition) { //If obj needs to be spawned in random postiton, will take random X between two borders
+            x = Random.Range(minPoint.position.x, maxPoint.position.x);
         }
-        
+        else { //If not, will just spawn obj in middle.
+            x = (maxPoint.position.x + minPoint.position.x) / 2;
+        }
+        GameObject newObj = Instantiate(objToSpawn, new Vector3 (x, player.position.y, player.position.z + distanceToPlayerOnSpawn), Quaternion.identity);
+        newObj.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, gc.speed);
     }
 
-    void SpawnObj(GameObject objToSpawn)
-    {
-        Debug.LogWarning("Spawning " + objToSpawn.name);
-        float x = Random.Range(minPoint.position.x, maxPoint.position.x);
-        GameObject newPointObj = Instantiate(objToSpawn, new Vector3 (x, player.position.y, player.position.z + 40), Quaternion.identity);
-        newPointObj.transform.SetParent(basePlane, true);
+    void spawnPointObj() {
+        SpawnObj(pointObj, true);
     }
+
+    
+    void spawnAugmentationObj() {
+        SpawnObj(augmentationObj);
+    }
+
+    void spawnTrapPlatform() {
+        SpawnObj(trapPlatform);
+    }
+
 }

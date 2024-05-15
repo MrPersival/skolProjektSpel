@@ -1,22 +1,15 @@
+
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class DeleteColliderScripts : MonoBehaviour
-{
-    public GameController gameController;
-    public Transform basePlane;
-    
-    private Transform basePlaneTransformOnStart;
-
-    void Start() {
-        basePlaneTransformOnStart = basePlane;
-    }
-
+{   
+    //Destroys all object that entered Collider. Does so to prevent game to have to many objects in game.
     private void OnTriggerEnter(Collider col)
     {
         //Debug.LogWarning("Entered collider, tag: " + col.tag);
-        if (col == basePlane) basePlane = basePlaneTransformOnStart;
-        else if (col.tag == "Platform") gameController.deletePaltform(col.gameObject);
+        if (col == null) Destroy(col);
     }
 }

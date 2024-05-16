@@ -1,16 +1,15 @@
+
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class DeleteColliderScripts : MonoBehaviour
-{
-    public GameController gameController;
-
+{   
+    //Destroys all object that entered Collider. Does so to prevent game to have to many objects in game.
     private void OnTriggerEnter(Collider col)
     {
-        if(col != null)
-        {
-            gameController.deletePaltform(col.gameObject);
-        }
+        //Debug.LogWarning("Entered collider, tag: " + col.tag);
+        if (col == null) Destroy(col);
     }
 }
